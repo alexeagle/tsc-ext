@@ -46,6 +46,7 @@ Based on the https://github.com/alexeagle/angular/tree/compiler_cli
 ## Extension points
 
 The flow of the compilation is:
+
 1. Locate and read the `tsconfig.json`.
 1. As files are read into the compiler, the contents may be re-written by the `preProcess` extension point.
 1. Extract statically-readable Decorator metadata from the sources
