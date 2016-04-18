@@ -31,15 +31,17 @@ optimizations with the Closure Compiler (https://developers.google.com/closure/c
 Currently on experimental branch
 https://github.com/angular/sickle/tree/ext
 
-### Angular 2
+### Tsetse
+An experimental static analysis framework, in which some checks can cause a compile failure,
+and checks can include suggested fixes.
+
+https://github.com/alexeagle/tsetse
+
+### Angular 2 (Coming soon)
 You can run the Angular 2 template compiler as a build step, producing a faster, more
 optimizable application.
 
 Based on the https://github.com/alexeagle/angular/tree/compiler_cli
-
-### Tsetse
-An experimental static analysis framework, in which some checks can cause a compile failure,
-and checks can include suggested fixes.
 
 ## Extension points
 

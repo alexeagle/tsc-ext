@@ -1,7 +1,6 @@
 {
     "compilerOptions": {
         "target": "es6",
-        // The generated files go here by default, unless --genDir is set.
         "outDir": "built"
     },
 

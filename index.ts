@@ -33,7 +33,7 @@ export interface Extension {
   /**
    * Static analysis checks beyond type-checking.
    */
-  check?(): void;
+  check?(sf: ts.SourceFile): {errors: ts.Diagnostic[], data: Object};
 }
 
 interface DebugExtension extends Extension {
@@ -147,6 +147,7 @@ function load(extensionsCfg: any): Extension[] {
       ext.loadPath = require.resolve(extension);
       result.push(ext);
     } catch (e) {
+      console.error(e);
       console.error(`Unable to load extension ${extension}. Is the npm module installed?`);
     }
   }
@@ -203,18 +204,18 @@ export function main(project: string, basePath?: string): number {
 
   check(program.getGlobalDiagnostics());
 
+  // Static analyses
+  const checkers = extensions.filter(enabled('check'));
   for (let sf of program.getSourceFiles()) {
     if (isCompilationTarget(sf)) {
       diagnostics.push(...ts.getPreEmitDiagnostics(program, sf));
+      checkers.forEach(ext => diagnostics.push(...ext.check(sf).errors));
     }
   }
   check(diagnostics);
   check(compilerHost.diagnostics);
 
-  // Type-check
-  check(ts.getPreEmitDiagnostics(program));
 
-  extensions.filter(enabled('check')).forEach(ext => ext.check());
 
   let failed = false;
   for (let sf of program.getSourceFiles()) {
