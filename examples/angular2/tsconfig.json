@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "target": "es6",
+        // The generated files go here by default, unless --genDir is set.
+        "outDir": "genfiles",
+        "experimentalDecorators": true,
+        // rootDirs for resolution of relative imports
+        "rootDirs": [
+          ".",                                    // for immediate sources
+          "./genfiles" // for generated code
+        ]
+    },
+
+    "extensions": {
+       "angular2/tools/compiler": {"setting1": "value"}
+    }
+}

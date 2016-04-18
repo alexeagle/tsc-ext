@@ -1,0 +1,25 @@
+{
+  "name": "tsc-ext",
+  "version": "0.0.1",
+  "description": "Extensible TypeScript compiler wrapper",
+  "main": "index.js",
+  "scripts": {
+    "format": "clang-format -style file -i *.ts */*.ts */*/*.ts",
+    "tsc": "tsc",
+    "tsc:w": "tsc --watch",
+    "typings": "typings install",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "typescript"
+  ],
+  "author": "Alex Eagle <alexeagle@google.com> (https://angularjs.org/)",
+  "license": "MIT",
+  "dependencies": {
+    "typescript": "^1.9.0-dev.20160416"
+  },
+  "devDependencies": {
+    "clang-format": "^1.0.37",
+    "typings": "^0.7.12"
+  }
+}
