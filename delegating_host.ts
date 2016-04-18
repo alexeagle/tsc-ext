@@ -2,7 +2,7 @@ import * as ts from 'typescript';
 
 /**
  * Implementation of CompilerHost that forwards all methods to another instance.
- * Useful for partial implementations to override this.
+ * Useful for partial implementations to override only methods they care about.
  */
 export abstract class DelegatingHost implements ts.CompilerHost {
   constructor(protected delegate: ts.CompilerHost) {}
@@ -25,9 +25,11 @@ export abstract class DelegatingHost implements ts.CompilerHost {
    * This method is a companion for 'resolveModuleNames' and is used to resolve 'types' references
    * to actual type declaration files
    */
-  //resolveTypeReferenceDirectives =
-    //  (typeReferenceDirectiveNames: string[], containingFile: string) =>
-      //    this.delegate.resolveTypeReferenceDirectives(typeReferenceDirectiveNames, containingFile);
+  // FIXME: need to express the optionality of this member.
+  // if the delegate has it undefined, ours should be too.
+  // resolveTypeReferenceDirectives =
+  //   (typeReferenceDirectiveNames: string[], containingFile: string) =>
+  //      this.delegate.resolveTypeReferenceDirectives(typeReferenceDirectiveNames, containingFile);
 
   fileExists = (fileName: string) => this.delegate.fileExists(fileName);
   readFile = (fileName: string) => this.delegate.readFile(fileName);

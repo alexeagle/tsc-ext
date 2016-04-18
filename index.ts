@@ -10,7 +10,13 @@ export interface Extension {
   /**
    * Configuration options supplied in tsconfig.json
    */
-  options: any;
+  options: {
+    // Location where generated sources are written.
+    // Separate from emitted outputs because these should be included in rootDirs
+    genDir?: string
+
+    // Extensions may add their own options as well.
+  };
 
   /**
    * For source modification extensions.
@@ -25,7 +31,7 @@ export interface Extension {
   codegen?(writeFile: (filePath: string, content: string) => void): void;
 
   /**
-   * Additional static analysis checks.
+   * Static analysis checks beyond type-checking.
    */
   check?(): void;
 }
@@ -65,7 +71,11 @@ function enabled(extensionPoint: string): (ext: Extension) => boolean {
   return (ext) => {
     const extension = ext as DebugExtension;
     const result = !!ext[extensionPoint];
-    debug(`Extension ${extension.name} ${result ? "provides" : "does not provide"} ${extensionPoint}`);
+    if (result) {
+      debug(`Executing ${extensionPoint} from extension ${extension.name}`);
+    } else {
+      debug(`Extension ${extension.name} does not provide ${extensionPoint}`);
+    }
     return result;
   }
 }
@@ -177,13 +187,19 @@ export function main(project: string, basePath?: string): number {
     return true;
   }
 
-  extensions.filter(enabled('codegen')).forEach(ext => ext.codegen((filename: string, source: string) => {
-      const outDir = ext.options.genDir || parsed.options.outDir;
-      const dest = path.join(outDir, filename);
-      mkdirp.sync(path.dirname(dest));
-      fs.writeFileSync(dest, source);
-      debug(`[tsc-ext] Wrote ${dest}`);
-    }));
+  extensions.filter(enabled('codegen'))
+      .forEach(ext => ext.codegen((filename: string, source: string) => {
+        let outDir: string;
+        if (ext.options.genDir) {
+          outDir = path.join(basePath, ext.options.genDir);
+        } else {
+          outDir = parsed.options.outDir;
+        }
+        const dest = path.join(outDir, filename);
+        mkdirp.sync(path.dirname(dest));
+        fs.writeFileSync(dest, source);
+        debug(`[tsc-ext] Wrote ${dest}`);
+      }));
 
   check(program.getGlobalDiagnostics());
 

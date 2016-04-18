@@ -1,17 +1,17 @@
 {
     "compilerOptions": {
         "target": "es6",
-        // The generated files go here by default, unless --genDir is set.
+        // The generated files go here by default, unless genDir is set.
         "outDir": "built",
         "experimentalDecorators": true,
         // rootDirs for resolution of relative imports
         "rootDirs": [
-          ".",                                    // for immediate sources
+          ".",         // for immediate sources
           "./genfiles" // for generated code
         ]
     },
 
     "extensions": {
-      "sickle": {"untyped": true, "outDir": "genfiles"}
+      "sickle": {"untyped": true, "genDir": "genfiles"}
     }
 }
